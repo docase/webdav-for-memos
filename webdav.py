@@ -5,11 +5,14 @@ from wsgidav.util import join_uri
 
 import requests
 
-## settings
+# settings for memos
 MEMOS_HOME_URL = '' #your memos home page url
 MEMOS_OPENID = '' #your memos openid, find it in settings
+# settings for wsgidav
 WEBDAV_USERNAME = 'admin'
 WEBDAV_PASSWORD = 'admin'
+WEBDAV_PORT = 8080
+WEBDAV_HOST = '0.0.0.0'
 
 # from memowebdav import VirtualResourceProvider4Memos
 class VirtualResourceProvider4Memos(DAVProvider):
@@ -95,9 +98,10 @@ class VirtualResFile(DAVNonCollection):
         return BytesIO(requests.get(self.resourceData[self.name]['url']).content)
 
 if __name__ == '__main__':
+    # settings for wsgidav
     config = {
-        "host": "0.0.0.0",
-        "port": 8080,
+        "host": WEBDAV_HOST,
+        "port": WEBDAV_PORT,
         "provider_mapping": {
             "/": VirtualResourceProvider4Memos(MEMOS_HOME_URL,MEMOS_OPENID),
         },
